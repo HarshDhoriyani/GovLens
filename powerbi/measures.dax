@@ -1,0 +1,81 @@
+-- GovLens Power BI measures
+-- Fact table: service_requests
+-- Status measures intentionally replace the status filter so each status KPI
+-- remains a named status count. Date, district, and category filters remain active.
+
+Total Requests =
+COUNTROWS ( 'service_requests' )
+
+Completed Requests =
+CALCULATE (
+    [Total Requests],
+    REMOVEFILTERS ( 'service_requests'[status] ),
+    'service_requests'[status] = "Completed"
+)
+
+Pending Requests =
+CALCULATE (
+    [Total Requests],
+    REMOVEFILTERS ( 'service_requests'[status] ),
+    'service_requests'[status] = "Pending"
+)
+
+In Progress Requests =
+CALCULATE (
+    [Total Requests],
+    REMOVEFILTERS ( 'service_requests'[status] ),
+    'service_requests'[status] = "In Progress"
+)
+
+Rejected Requests =
+CALCULATE (
+    [Total Requests],
+    REMOVEFILTERS ( 'service_requests'[status] ),
+    'service_requests'[status] = "Rejected"
+)
+
+Eligible Requests =
+CALCULATE (
+    [Total Requests],
+    REMOVEFILTERS ( 'service_requests'[status] ),
+    'service_requests'[status]
+        IN { "Completed", "Pending", "In Progress" }
+)
+
+Completion Rate =
+DIVIDE ( [Completed Requests], [Eligible Requests], BLANK () )
+
+Average Resolution Days =
+CALCULATE (
+    AVERAGE ( 'service_requests'[resolution_days] ),
+    REMOVEFILTERS ( 'service_requests'[status] ),
+    'service_requests'[status] = "Completed",
+    KEEPFILTERS ( 'service_requests'[resolution_days] >= 0 )
+)
+
+Unresolved Requests =
+[Pending Requests] + [In Progress Requests]
+
+Raw Records =
+COUNTROWS ( 'raw_service_requests' )
+
+Cleaned Records =
+[Total Requests]
+
+Removed Records =
+[Raw Records] - [Cleaned Records]
+
+Duplicate Request IDs =
+SUMX (
+    VALUES ( 'raw_service_requests'[request_id] ),
+    VAR ThisRequestID =
+        'raw_service_requests'[request_id]
+    VAR Occurrences =
+        CALCULATE ( COUNTROWS ( 'raw_service_requests' ) )
+    RETURN
+        IF (
+            NOT ISBLANK ( ThisRequestID ),
+            MAX ( Occurrences - 1, 0 ),
+            0
+        )
+)
