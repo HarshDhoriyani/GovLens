@@ -93,8 +93,7 @@ flowchart TD
 - Pandas, NumPy, SQLite (`sqlite3`), Matplotlib, Seaborn
 - pytest for automated tests
 - Jupyter Notebook format for exploratory analysis
-- Power BI Desktop is an optional manual step; this workspace did not have
-  Power BI Desktop available, so no `.pbix` is included.
+- Power BI Desktop report: [powerbi/GovLens.pbix](powerbi/GovLens.pbix)
 
 Dependency ranges are in [requirements.txt](requirements.txt). They are
 compatible with the inspected Python 3.12.3 environment.
@@ -210,29 +209,20 @@ the fact table.
 
 ### Power BI
 
-**Dashboard status:** Power BI Desktop was not available in the inspected
-environment, so a `.pbix` or dashboard screenshots have not been created. The
-four-page manual build specification and data model are documented in
-[powerbi/dashboard_specification.md](powerbi/dashboard_specification.md).
+The repository includes [powerbi/GovLens.pbix](powerbi/GovLens.pbix), a
+one-page dashboard with KPI cards and charts for request status, monthly
+volume, service category, district, completion rate, and pending requests.
+The preview below is the screenshot shared for this project. It shows
+synthetic demonstration data, not official government statistics.
 
-From the project root, run `python scripts/run_pipeline.py`. In Power BI
-Desktop, import `data/processed/service_requests.csv` as the fact,
-`data/raw/service_requests_synthetic.csv` as the disconnected raw comparison
-table, and `data/processed/data_quality_summary.csv` as the disconnected
-missing-values summary. Follow [powerbi/power_query_notes.md](powerbi/power_query_notes.md)
-for exact types, transformations, dimensions, relationships, and refresh
-checks. Add measures from [powerbi/measures.dax](powerbi/measures.dax), and
-build the Executive Overview, District Performance, Service Analysis, and Data
-Quality pages per the visual field/format specification.
+![GovLens Power BI dashboard preview](powerbi/screenshots/dashboard-preview.png)
 
-The completion denominator is Completed + Pending + In Progress; Rejected and
-invalid/missing statuses are excluded. A zero eligible denominator displays
-blank, matching the Python `None` and SQL `NULL` behavior. Show the synthetic
-data disclosure on every report page. The Data Quality validation table is a
-verified-run snapshot; refresh its values from the generated report after
-rerunning the pipeline. See the dashboard QA checklist for expected card values
-and screenshot instructions. Do not represent a `.pbix` as complete until it
-has been built and validated in Power BI Desktop.
+The PBIX was not opened or independently validated in Power BI Desktop in this
+environment. The four-page
+[dashboard specification](powerbi/dashboard_specification.md) describes
+potential extensions; it is not a claim that those additional pages are
+already present. See [powerbi/power_query_notes.md](powerbi/power_query_notes.md)
+for the model and data refresh details.
 
 ## Findings and data quality
 
@@ -258,12 +248,12 @@ in December 2025. These are generated values only, not real-world findings.
 
 ## Screenshots
 
-No dashboard screenshots are included because Power BI Desktop was unavailable
-and no `.pbix` report was created. After building and validating the report,
-capture one legible 16:9 screenshot of each of the four pages, keep the synthetic
-data disclosure visible, save the images under `powerbi/screenshots/`, and link
-them here. Do not imply the dashboard has been built until a `.pbix` and those
-validated screenshots actually exist.
+The current one-page dashboard preview is
+[powerbi/screenshots/dashboard-preview.png](powerbi/screenshots/dashboard-preview.png).
+The report screenshot does not visibly include the synthetic-data disclosure;
+add that disclosure to the report before presenting it as a finished dashboard.
+If you build the additional pages in the specification, capture and add a
+screenshot for each completed page.
 
 ## Testing
 

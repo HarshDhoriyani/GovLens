@@ -2,10 +2,16 @@
 
 ## Report status and verified model
 
-Power BI Desktop was not found in either inspected installation location or on
-`PATH`. No `.pbix` exists. This document specifies a manual implementation
-against the generated, verified project files; it does not claim a report was
-built or visually validated in Power BI.
+The repository contains a supplied `GovLens.pbix` with one page: four KPI
+cards and charts for status, monthly requests, service category, district,
+completion rate by district, and pending requests by district. The author also
+provided a screenshot at `screenshots/dashboard-preview.png`. The PBIX was not
+independently opened or validated in Power BI Desktop in this environment.
+
+This document specifies a proposed four-page extension against the generated,
+verified project files; those additional pages are not claimed to exist in the
+current report. The supplied screenshot does not show a synthetic-data
+disclosure, so add one visibly to the report before presenting it as finished.
 
 Use the exact sources, type conversions, dimensions, and three relationships
 in [power_query_notes.md](power_query_notes.md). The fact table is
@@ -195,7 +201,7 @@ Test at least one date, district, and category selection; confirm the
 completion denominator excludes rejected records and returns blank when no
 eligible records remain; confirm the page disclosure remains visible.
 
-Save the manually built report as `powerbi/GovLens.pbix` only after those
-checks. Capture legible 16:9 screenshots of all four pages, including the
-synthetic disclosure, and add them under `powerbi/screenshots/`. Neither a
-report nor screenshots currently exist.
+After making changes, save the report as `powerbi/GovLens.pbix` and capture
+legible 16:9 screenshots of the pages that are actually present. Keep the
+synthetic disclosure visible in each screenshot and add the images under
+`powerbi/screenshots/`.
